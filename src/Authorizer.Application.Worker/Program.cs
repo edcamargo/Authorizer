@@ -1,5 +1,9 @@
 ﻿using Authorizer.Application.Worker.Common;
 using Authorizer.Application.Worker.Common.Interfaces;
+using Authorizer.Application.Worker.Servives;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -10,106 +14,48 @@ namespace Authorizer.Application.Worker
 {
     public class Program
     {
-        //
-        private static IDeserializerJson<account> _deserializer;
-
         public static account Account;
         public static List<Input> Inputs;
 
-        public static void ConfigureInstances()
-        {
-            _deserializer = new DeserializerJson<account>();
+        //public static void ConfigureInstances()
+        //{
+        //    _deserializer = new DeserializerJson<account>();
 
-            Account = new account();
-            Inputs = new List<Input>();
-        }
+        //    Account = new account();
+        //    Inputs = new List<Input>();
+        //}
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             try
             {
-                ConfigureInstances();
+                var service = new ServiceCollection();
+                var services = Startup.ConfigureServices(service);
+                var serviceProvider = services.BuildServiceProvider();
 
-                var te = Console.ReadLine();
+                serviceProvider.GetService<EntryPoint>().Run(args);
 
-                //StreamReader st = new StreamReader(te);
+                //StreamReader file = new StreamReader(@"C:\Projetos\Authorizer\json.txt");
+                //_deserializer.Deserializer(file);
 
-                var ret = JsonConvert.DeserializeObject<account>(te);
+                //var te = Console.ReadLine();
 
-                Console.WriteLine(ret);
+                //var ret = JsonConvert.DeserializeObject<account>(te);
 
-                Console.WriteLine(JsonConvert.DeserializeObject<account>(te));
+                //Console.WriteLine(ret);
 
-                Console.WriteLine("Entrada : " + te);
+                //Console.WriteLine(JsonConvert.DeserializeObject<account>(te));
 
-                //var teste = _deserializer.Deserializer(st);
-                
-                //Console.WriteLine($"Active : { te.ActiveCard } Limit : { te.AvailableLimit } ");
+                //Console.WriteLine("Entrada : " + te);
+
 
                 Console.ReadKey();
-
-                //ReadInput();
-                //AuthorizeOperations();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }
         }
-
-        private static void ReadInput()
-        {
-            Inputs = new List<Input>();
-            Console.WriteLine("Cat operations");
-            do
-            {
-                string line = Console.ReadLine();
-                if (string.IsNullOrEmpty(line)) { break; }
-                Inputs.Add(JsonConvert.DeserializeObject<Input>(line));
-            } while (true);
-        }
-                
-        public static Output AccountCreation(account account)
-        {
-            var output = new Output() { Violations = new string[0] };
-
-            if (account.activeCard)
-            {
-                output.Violations = new string[] { "account-already-initialized" };
-            }
-            else
-            {
-                account.activeCard = account.activeCard;
-                account.availableLimit = account.availableLimit;
-            }
-
-            return output;
-        }
-
-        public static bool HighFrequency(Transaction current)
-        {
-            return TransactionsOnTwoMinutes(current) > 3;
-        }
-
-        public static int TransactionsOnTwoMinutes(Transaction current)
-        {
-            DateTime minutes = current.Time.AddMinutes(-2);
-            int transactions = Inputs.Where(c => c.Transaction.Time >= minutes && c.Transaction.Time <= current.Time).Count();
-            return transactions;
-        }
-
-        public static bool DoubledTransaction(Transaction current)
-        {
-            int transactions = TransactionsOnTwoMinutes(current);
-
-            if (transactions > 2)
-            {
-                return Inputs.Where(c => c.Transaction.Merchant == current.Merchant && c.Transaction.Amount == current.Amount).Count() > 2;
-            }
-            return false;
-        }
-
-
     }
 
     #region Entities
