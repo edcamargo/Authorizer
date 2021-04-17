@@ -1,5 +1,4 @@
-﻿using Authorizer.Application.Worker.Servives;
-using Authorizer.InfraStructure.Data.Context;
+﻿using Authorizer.InfraStructure.Data.Context;
 using Authorizer.InfraStructure.Ioc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -36,8 +35,6 @@ namespace Authorizer.Application.Worker
 
             DependencyInjection.DependencyInjectionServices(ref services);
             DependencyInjection.DependencyInjectionRepository(ref services);
-
-            services.AddSingleton<IAccount, Account>();
 
             services.AddSingleton<EntryPoint>();
 

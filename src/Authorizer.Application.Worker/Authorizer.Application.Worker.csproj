@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Authorizer.Domain\Authorizer.Domain.csproj" />
     <ProjectReference Include="..\Authorizer.InfraStructure.Data\Authorizer.InfraStructure.Data.csproj" />
     <ProjectReference Include="..\Authorizer.InfraStructure.Ioc\Authorizer.InfraStructure.Ioc.csproj" />
   </ItemGroup>

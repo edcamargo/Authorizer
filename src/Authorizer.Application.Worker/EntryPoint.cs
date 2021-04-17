@@ -1,4 +1,4 @@
-﻿using Authorizer.Application.Worker.Servives;
+﻿using Authorizer.Domain.Entities;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
@@ -10,12 +10,11 @@ namespace Authorizer.Application.Worker
 {
     public class EntryPoint
     {
-        private readonly IAccount _account;
+        // service private readonly IAccount _account;
         private readonly ILogger<EntryPoint> _logger;
 
-        public EntryPoint(IAccount account, ILogger<EntryPoint> logger)
+        public EntryPoint(ILogger<EntryPoint> logger)
         {
-            _account = account;
             _logger = logger;
         }
 
@@ -23,63 +22,21 @@ namespace Authorizer.Application.Worker
         {
             _logger.LogDebug("The coefficients have been set!");
 
-            /*
-            var nome = _account.RetornarValor("");
-
-            var test = JsonConvert.DeserializeObject<object>(Console.ReadLine());
-
-            Console.WriteLine($"Command 1 : { test }");
-
-            Console.WriteLine("Qual é o seu nome?");
-            var name = Console.ReadLine();
-
-            Console.WriteLine("Quantos anos você tem?");
-            var idade = Console.ReadLine();
-
-            Console.WriteLine($"Command 2 : { name } - { idade }");
-
-
-            Console.WriteLine($"Command : { Console.ReadLine() }");
-
-            Console.WriteLine($"Nome : { nome }");
-            */
-
-            /*
-            SpringApplication.run(AuthorizerApplication.class, args);
-
-		    Scanner scanner = new Scanner(System.in);
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.findAndRegisterModules();
-
-		    while (scanner.hasNext()) {
-			    command = scanner.nextLine();
-			    AccountDTO accountDTO = getAccountOperation(command, objectMapper);
-                TransactionDTO transactionDTO = getTransactionOperation(command, objectMapper);
-
-                accountFlow(objectMapper, accountDTO);
-                transactionFlow(objectMapper, transactionDTO);
-            }
-            */
-
-
             List<string> salesLines = new List<string>();
             Console.InputEncoding = Encoding.UTF8;
             using (StreamReader reader = new StreamReader(Console.OpenStandardInput(), Console.InputEncoding))
             {
-                string stdin = "";
-
+                var stdin = "";
                 do
                 {
-                    StringBuilder stdinBuilder = new StringBuilder();
+                    var objAccount = JsonConvert.DeserializeObject<RootTransaction>(Console.ReadLine());
 
-                    var test = JsonConvert.DeserializeObject<object>(Console.ReadLine());
+                    Account account = new Account(true, 100);
+                    var xxx = account.Transaction(100);
 
-                    //Console.WriteLine($"Command 1 : { test }");
 
-                    //stdin = reader.ReadLine();
+                    StringBuilder stdinBuilder = new StringBuilder(account.ToString());
 
-                    stdinBuilder.Append(test);
-                    var lineIn = test;
                     if (stdinBuilder.ToString().Trim() != "")
                     {
                         salesLines.Add(stdinBuilder.ToString().Trim());
@@ -87,6 +44,7 @@ namespace Authorizer.Application.Worker
 
                     foreach (var item in salesLines)
                     {
+                        Console.Clear();
                         Console.WriteLine(item);
                     }
 

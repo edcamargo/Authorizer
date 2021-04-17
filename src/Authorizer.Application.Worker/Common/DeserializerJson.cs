@@ -16,7 +16,7 @@ namespace Authorizer.Application.Worker.Common
 
         public T Deserializer(StreamReader streamReader)
         {
-            using (JsonTextReader reader = new JsonTextReader(streamReader))
+            using (JsonTextReader reader = new(streamReader))
             {
                 var _serializer = new JsonSerializer();
 
