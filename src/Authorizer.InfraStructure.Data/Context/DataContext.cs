@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Authorizer.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace Authorizer.InfraStructure.Data.Context
@@ -8,7 +9,7 @@ namespace Authorizer.InfraStructure.Data.Context
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         { }
 
-        //public DbSet<Account> Account { get; set; }
+        public DbSet<Account> Account { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
