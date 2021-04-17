@@ -1,21 +1,21 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Authorizer.Domain.Entities
 {
-    public class Account
+    public class Account : Entity
     {
-        public Account(bool activecard, Int32 availablelimit)
+        public Account() { }
+
+        public Account(bool activecard, int availablelimit)
         {
             ActiveCard = activecard;
             AvailableLimit = availablelimit;
         }
 
-        [JsonProperty("active-card")]
+        //[JsonProperty("active-card")]
         public bool ActiveCard { get; private set; }
 
-        [JsonProperty("available-limit")]
+        //[JsonProperty("available-limit")]
         public int AvailableLimit { get; private set; }
 
         public int Transaction(int AvailableTransation)

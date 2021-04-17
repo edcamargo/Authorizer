@@ -1,8 +1,6 @@
 ﻿using Authorizer.Domain.Entities;
 using Authorizer.Domain.Repositories;
 using Authorizer.InfraStructure.Data.Context;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Authorizer.InfraStructure.Data.Repositories
@@ -22,9 +20,10 @@ namespace Authorizer.InfraStructure.Data.Repositories
             _dataContext.SaveChanges();
         }
 
-        public IEnumerable<Account> GetAll()
+        public Account Find(Account account)
         {
-            return _dataContext.Account.AsNoTracking().OrderBy(x => x.AvailableLimit);
+            return _dataContext.Account.FirstOrDefault(x => x.ActiveCard.Equals(account.ActiveCard) 
+                                                         && x.AvailableLimit.Equals(account.AvailableLimit));
         }
     }
 }

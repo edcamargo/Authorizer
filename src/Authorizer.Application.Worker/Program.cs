@@ -21,34 +21,4 @@ namespace Authorizer.Application.Worker
             }
         }
     }
-
-    #region Entities
-
-    public struct Input
-    {
-        public account Account { get; set; }
-        public Transaction Transaction { get; set; }
-    }
-
-    public struct Output
-    {
-        public account Account { get; set; }
-        public string[] Violations { get; set; }
-    }
-
-    public struct account
-    {
-        public bool activeCard { get; set; }
-        public string availableLimit { get; set; }
-    }
-
-    public struct Transaction
-    {
-        public string Merchant { get; set; }
-        public int Amount { get; set; }
-        public DateTime Time { get; set; }
-    }
-
-    #endregion
-
 }

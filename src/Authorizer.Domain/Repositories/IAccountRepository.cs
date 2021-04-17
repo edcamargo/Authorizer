@@ -1,5 +1,4 @@
 ﻿using Authorizer.Domain.Entities;
-using System.Collections.Generic;
 
 namespace Authorizer.Domain.Repositories
 {
@@ -7,6 +6,6 @@ namespace Authorizer.Domain.Repositories
     {
         void Create(Account account);
 
-        IEnumerable<Account> GetAll();
+        Account Find(Account account);
     }
 }

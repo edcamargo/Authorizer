@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Authorizer.Domain.Repositories;
+using Authorizer.InfraStructure.Data.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Authorizer.InfraStructure.Ioc
 {
@@ -12,7 +14,7 @@ namespace Authorizer.InfraStructure.Ioc
 
         public static void DependencyInjectionRepository(ref IServiceCollection services)
         {
-            // services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
         }
     }
 }

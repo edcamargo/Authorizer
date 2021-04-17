@@ -1,13 +1,16 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Authorizer.Domain.Entities
 {
     public class Transaction
     {
         // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse); 
-        public string merchant { get; set; }
-        public int amount { get; set; }
-        public DateTime time { get; set; }
+        [Key]
+        public int TransactionId { get; private set; }
+        public string merchant { get; private set; }
+        public int amount { get; private set; }
+        public DateTime time { get; private set; }
     }
 
     public class RootTransaction

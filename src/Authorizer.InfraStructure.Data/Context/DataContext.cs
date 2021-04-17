@@ -10,6 +10,7 @@ namespace Authorizer.InfraStructure.Data.Context
         { }
 
         public DbSet<Account> Account { get; set; }
+        public DbSet<Transaction> Transaction { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

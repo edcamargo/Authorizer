@@ -1,4 +1,6 @@
-﻿using Authorizer.Domain.Entities;
+﻿using Authorizer.Application.Worker.Dtos;
+using Authorizer.Domain.Entities;
+using Authorizer.Domain.Repositories;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
@@ -10,11 +12,12 @@ namespace Authorizer.Application.Worker
 {
     public class EntryPoint
     {
-        // service private readonly IAccount _account;
+        private readonly IAccountRepository _accountRepository;
         private readonly ILogger<EntryPoint> _logger;
 
-        public EntryPoint(ILogger<EntryPoint> logger)
+        public EntryPoint(IAccountRepository accountRepository, ILogger<EntryPoint> logger)
         {
+            _accountRepository = accountRepository;
             _logger = logger;
         }
 
@@ -29,13 +32,17 @@ namespace Authorizer.Application.Worker
                 var stdin = "";
                 do
                 {
-                    var objAccount = JsonConvert.DeserializeObject<RootTransaction>(Console.ReadLine());
+                    // convert para objDto
+                    var objAccountDto = JsonConvert.DeserializeObject<RootAccountDto>(Console.ReadLine());
 
-                    Account account = new Account(true, 100);
-                    var xxx = account.Transaction(100);
+                    // Cria a conta
+                    var account = new Account(objAccountDto.account.ActiveCard, objAccountDto.account.AvailableLimit);
+                    _accountRepository.Create(account);
 
+                    // Exibe os dados de entrada
+                    var retorno = JsonConvert.SerializeObject(objAccountDto);
 
-                    StringBuilder stdinBuilder = new StringBuilder(account.ToString());
+                    StringBuilder stdinBuilder = new StringBuilder(retorno);
 
                     if (stdinBuilder.ToString().Trim() != "")
                     {
