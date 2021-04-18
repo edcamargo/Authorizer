@@ -3,6 +3,7 @@
     public enum Operations
     {
         ACCOUNT,
-        TRANSACTION
+        TRANSACTION,
+        UNDEFINED
     }
 }

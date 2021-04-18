@@ -1,13 +1,13 @@
 ﻿using Newtonsoft.Json;
 
-namespace Authorizer.Application.Worker.Dtos
+namespace Authorizer.Domain.Dtos.Account
 {
     public struct AccountDto
     {
-        //[JsonProperty("activeCard")]
+        [JsonProperty(PropertyName = "active-card")]
         public bool ActiveCard { get; set; }
 
-        //[JsonProperty("availableLimit")]
+        [JsonProperty(PropertyName = "available-limit")]
         public int AvailableLimit { get; set; }
     }
 

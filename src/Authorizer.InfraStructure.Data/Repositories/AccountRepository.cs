@@ -1,5 +1,5 @@
 ﻿using Authorizer.Domain.Entities;
-using Authorizer.Domain.Repositories;
+using Authorizer.Domain.Interfaces.Repositories;
 using Authorizer.InfraStructure.Data.Context;
 using System.Linq;
 
@@ -14,16 +14,17 @@ namespace Authorizer.InfraStructure.Data.Repositories
             _dataContext = dataContext;
         }
 
-        public void Create(Account account)
+        public Account Create(Account account)
         {
-            _dataContext.Account.Add(account);
+            _dataContext.Set<Account>().AddRange(account);
             _dataContext.SaveChanges();
+
+            return account;
         }
 
-        public Account Find(Account account)
+        public Account FindActiveCard(object obj)
         {
-            return _dataContext.Account.FirstOrDefault(x => x.ActiveCard.Equals(account.ActiveCard) 
-                                                         && x.AvailableLimit.Equals(account.AvailableLimit));
+            return _dataContext.Set<Account>().FirstOrDefault(x => x.ActiveCard.Equals(obj));
         }
     }
 }

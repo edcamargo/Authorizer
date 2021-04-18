@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Authorizer.Domain.Entities
 {
-    public class Account : Entity
+    public class Account
     {
         public Account() { }
 
@@ -12,22 +15,26 @@ namespace Authorizer.Domain.Entities
             AvailableLimit = availablelimit;
         }
 
-        //[JsonProperty("active-card")]
+        [Key]
+        [JsonProperty(PropertyName = "active-card")]
         public bool ActiveCard { get; private set; }
 
-        //[JsonProperty("available-limit")]
+        [JsonProperty(PropertyName = "available-limit")]
         public int AvailableLimit { get; private set; }
 
-        public int Transaction(int AvailableTransation)
+        [NotMapped]
+        [JsonProperty(PropertyName = "violations")]
+        public List<string> Violations { get; private set; }
+
+        public void ThrowsViolation(List<string> Message)
         {
-            var Acumulativo = AvailableLimit - AvailableTransation;
-            return Acumulativo;
+            Violations = Message;
         }
-    }
-    
-    public class RootAccount
-    {
-        public Account account { get; set; }
-        public List<string> violations { get; set; }
-    }
+
+        public int Transaction(int amountTransation)
+        {
+            var newAvailableLimit = AvailableLimit - amountTransation;
+            return newAvailableLimit;
+        }
+    }    
 }

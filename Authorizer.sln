@@ -12,9 +12,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8D6B29C2-0617-4851-B30B-6664EFEC4C85}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{27BB1805-93AC-4E44-B501-948B9EFEBDE5}"
-	ProjectSection(SolutionItems) = preProject
-		test.json = test.json
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authorizer.Application.Worker", "src\Authorizer.Application.Worker\Authorizer.Application.Worker.csproj", "{963DF18E-8658-427A-837D-810D50616DE7}"
 EndProject
@@ -29,7 +26,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authorizer.InfraStructure.I
 		{EF0D3ADC-DAA4-4881-B32D-7DAF2D90D25A} = {EF0D3ADC-DAA4-4881-B32D-7DAF2D90D25A}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authorizer.Domain", "src\Authorizer.Domain\Authorizer.Domain.csproj", "{2EC6FE67-0748-4514-8A67-6147E40E6F73}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authorizer.Domain", "src\Authorizer.Domain\Authorizer.Domain.csproj", "{2EC6FE67-0748-4514-8A67-6147E40E6F73}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

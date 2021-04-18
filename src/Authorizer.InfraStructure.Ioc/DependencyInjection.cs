@@ -1,5 +1,7 @@
-﻿using Authorizer.Domain.Repositories;
+﻿using Authorizer.Domain.Interfaces.Repositories;
+using Authorizer.Domain.Interfaces.Services;
 using Authorizer.InfraStructure.Data.Repositories;
+using Authorizer.InfraStructure.Data.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Authorizer.InfraStructure.Ioc
@@ -8,8 +10,7 @@ namespace Authorizer.InfraStructure.Ioc
     {
         public static void DependencyInjectionServices(ref IServiceCollection services)
         {
-            // services.AddTransient<IUserQueries, UserQueries>();
-            // services.AddTransient<IEmailFacade, SendGridFacade>();
+            services.AddTransient<IAccountService, AccountService>();
         }
 
         public static void DependencyInjectionRepository(ref IServiceCollection services)
