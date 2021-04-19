@@ -38,13 +38,8 @@ namespace Authorizer.InfraStructure.Data.Services
             if (!existsActiveCard.ActiveCard)
                 return JsonConvert.SerializeObject("card-not-active");
 
-            ValidateInsufficientlimit(existsActiveCard, transaction, out bool errorLimit);
-            if (errorLimit)
-                existsActiveCard.ThrowsViolation("insufficient-limit");
-
+            ValidateInsufficientLimit(existsActiveCard, transaction, out bool errorLimit);
             ValidateSmallInterval(existsActiveCard, transaction, out bool errorSmall);
-            if (errorSmall)
-                existsActiveCard.ThrowsViolation("high-frequency-small-interval");
 
             if(!errorLimit && !errorSmall)
                 _transactionRepository.Create(transaction);
@@ -52,7 +47,7 @@ namespace Authorizer.InfraStructure.Data.Services
             return JsonConvert.SerializeObject(existsActiveCard);
         }
 
-        public void ValidateInsufficientlimit(Account account, Transaction transaction, out bool errorLimit)
+        public void ValidateInsufficientLimit(Account account, Transaction transaction, out bool errorLimit)
         {
             errorLimit = false;
             var sumCalculater = _transactionRepository.GetSumCalculater();
@@ -61,6 +56,7 @@ namespace Authorizer.InfraStructure.Data.Services
             if (sumTransact > account.AvailableLimit)
             {
                 errorLimit = true;
+                account.ThrowsViolation("insufficient-limit");
             }
         }
 
@@ -70,11 +66,12 @@ namespace Authorizer.InfraStructure.Data.Services
             var lastTransaction = _transactionRepository.GetLastTransaction();
             if (lastTransaction != null)
             {
-                var diff = transaction.Time.Subtract(lastTransaction.Time);
+                var diffTransaction = transaction.Time.Subtract(lastTransaction.Time);
 
-                if (diff.TotalMinutes < 3)
+                if (diffTransaction.TotalMinutes < 3)
                 {
                     errorSmall = true;
+                    account.ThrowsViolation("high-frequency-small-interval");
                 }
             }
         }
