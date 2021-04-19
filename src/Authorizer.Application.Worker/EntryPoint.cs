@@ -36,18 +36,18 @@ namespace Authorizer.Application.Worker
 
                     switch (_command)
                     {
-                        case string a when a.Contains(Operations.ACCOUNT.ToString().ToLower()):
+                        case string account when account.Contains(Operations.ACCOUNT.ToString().ToLower()):
                             returnMessage = _accountService.Execute(_command);
                             Console.WriteLine(returnMessage);
 
                             break;
-                        case string a when a.Contains(Operations.TRANSACTION.ToString().ToLower()):
+                        case string transact when transact.Contains(Operations.TRANSACTION.ToString().ToLower()):
                             returnMessage = _transactionService.Execute(_command);
                             Console.WriteLine(returnMessage);
 
                             break;
                         case null:
-                            Console.WriteLine("Transaction not implemented!");
+                            Console.WriteLine("Operation not implemented!");
                             break;
                     }
 

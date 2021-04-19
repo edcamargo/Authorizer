@@ -25,7 +25,6 @@ namespace Authorizer.InfraStructure.Data.Repositories
 
         public Account FindActiveCard()
         {
-            //return _dataContext.Set<Account>().FirstOrDefault(x => x.ActiveCard.Equals(obj));
             return _dataContext.Set<Account>().AsNoTracking().FirstOrDefault();
         }
     }

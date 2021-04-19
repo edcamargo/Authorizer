@@ -38,8 +38,6 @@ namespace Authorizer.InfraStructure.Data.Repositories
         public Transaction GetLastTransaction()
         {
             return _dataContext.Set<Transaction>().OrderByDescending(x => x.Time).FirstOrDefault();
-
-            // var result = Sample.OrderByDescending(t => t.Date).First();
         }
     }
 }
