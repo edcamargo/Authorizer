@@ -1,6 +1,7 @@
 ﻿using Authorizer.Domain.Entities;
 using Authorizer.Domain.Interfaces.Repositories;
 using Authorizer.InfraStructure.Data.Context;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace Authorizer.InfraStructure.Data.Repositories
@@ -22,9 +23,10 @@ namespace Authorizer.InfraStructure.Data.Repositories
             return account;
         }
 
-        public Account FindActiveCard(object obj)
+        public Account FindActiveCard()
         {
-            return _dataContext.Set<Account>().FirstOrDefault(x => x.ActiveCard.Equals(obj));
+            //return _dataContext.Set<Account>().FirstOrDefault(x => x.ActiveCard.Equals(obj));
+            return _dataContext.Set<Account>().AsNoTracking().FirstOrDefault();
         }
     }
 }

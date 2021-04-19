@@ -1,10 +1,8 @@
-﻿using Authorizer.Domain.Dtos.Account;
-using Authorizer.Domain.Entities;
+﻿using Authorizer.Domain.Entities;
 using Authorizer.Domain.Interfaces.Repositories;
 using Authorizer.Domain.Interfaces.Services;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace Authorizer.InfraStructure.Data.Services
 {
@@ -12,7 +10,6 @@ namespace Authorizer.InfraStructure.Data.Services
     {
         private readonly IAccountRepository _accountRepository;
         private readonly ILogger<AccountService> _logger;
-        private string MESSAGE;
 
         public AccountService(IAccountRepository accountRepository, ILogger<AccountService> logger)
         {
@@ -22,35 +19,44 @@ namespace Authorizer.InfraStructure.Data.Services
 
         public object Execute(string command)
         {
-            var account = new Account();
-            var accountDto = JsonConvert.DeserializeObject<RootAccountDto>(command);
-            var ExistsActiveCard = _accountRepository.FindActiveCard(accountDto.account.ActiveCard);
-
-            if (ExistsActiveCard == null)
-                account = CreateAccount(accountDto);
-
-            if (ExistsActiveCard != null)
-                account = ReturnAccount(ExistsActiveCard);
-
-            account.ThrowsViolation(new List<string>() { MESSAGE });
-
-            return JsonConvert.SerializeObject(account);
-        }
-
-        public Account CreateAccount(RootAccountDto rootAccountDto)
-        {
             _logger.LogInformation("Init Create Account!");
 
-            var account = new Account(rootAccountDto.account.ActiveCard, rootAccountDto.account.AvailableLimit);
-            return _accountRepository.Create(account);
+            var rootAccount = new RootAccount();
+            var accountDto = JsonConvert.DeserializeObject<RootAccount>(command);
+            var existsActiveCard = _accountRepository.FindActiveCard();
+
+            if (existsActiveCard == null)
+                rootAccount = CreateAccount(accountDto);
+            
+            if (existsActiveCard != null)
+                rootAccount = ReturnAccount(existsActiveCard);
+
+            return JsonConvert.SerializeObject(rootAccount);
+        }
+        
+        public RootAccount CreateAccount(RootAccount rootAccount)
+        {
+            var account = new Account(rootAccount.account.ActiveCard, rootAccount.account.AvailableLimit);
+            var accountCreated = _accountRepository.Create(account);
+
+            var _rootAccount = new RootAccount()
+            {
+                account = new Account(accountCreated.ActiveCard, accountCreated.AvailableLimit)
+            };
+
+            return _rootAccount;
         }
 
-        public Account ReturnAccount(Account account)
+        public static RootAccount ReturnAccount(Account account)
         {
-            _logger.LogInformation("Account Already Initialized!");
+            var _rootAccount = new RootAccount()
+            {
+                account = new Account(account.ActiveCard, account.AvailableLimit)
+            };
 
-            MESSAGE = "account-already-initialized";           
-            return new Account(account.ActiveCard, account.AvailableLimit);
+            _rootAccount.account.ThrowsViolation("account-already-initialized");
+
+            return _rootAccount;
         }
     }
 }

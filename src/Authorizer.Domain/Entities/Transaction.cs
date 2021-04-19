@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace Authorizer.Domain.Entities
 {
@@ -14,13 +15,18 @@ namespace Authorizer.Domain.Entities
             Time = time;
         }
 
+        [JsonProperty(PropertyName = "merchant")]
         public string Merchant { get; private set; }
+
+        [JsonProperty(PropertyName = "amount")]
         public int Amount { get; private set; }
+
+        [JsonProperty(PropertyName = "time")]
         public DateTime Time { get; private set; }
     }
 
     public class RootTransaction
     {
-        public Transaction Transaction { get; set; }
+        public Transaction transaction { get; set; }
     }
 }

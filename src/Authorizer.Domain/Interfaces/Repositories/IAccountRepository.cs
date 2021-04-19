@@ -6,6 +6,6 @@ namespace Authorizer.Domain.Interfaces.Repositories
     {
         Account Create(Account account);
 
-        Account FindActiveCard(object obj);
+        Account FindActiveCard();
     }
 }

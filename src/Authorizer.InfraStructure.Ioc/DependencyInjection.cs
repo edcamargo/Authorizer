@@ -11,11 +11,13 @@ namespace Authorizer.InfraStructure.Ioc
         public static void DependencyInjectionServices(ref IServiceCollection services)
         {
             services.AddTransient<IAccountService, AccountService>();
+            services.AddTransient<ITransactionService, TransactionService>();
         }
 
         public static void DependencyInjectionRepository(ref IServiceCollection services)
         {
             services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
         }
     }
 }

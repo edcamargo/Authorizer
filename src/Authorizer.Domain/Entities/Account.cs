@@ -24,11 +24,15 @@ namespace Authorizer.Domain.Entities
 
         [NotMapped]
         [JsonProperty(PropertyName = "violations")]
-        public List<string> Violations { get; private set; }
+        public List<string> Violations { get; private set; } = new();
 
-        public void ThrowsViolation(List<string> Message)
+        public void ThrowsViolation(string Message)
         {
-            Violations = Message;
+            if (!Violations.Contains(Message))
+            {
+                //Violations.AddRange(new List<string> { Message });
+                Violations.Add(Message);
+            }
         }
 
         public int Transaction(int amountTransation)
@@ -36,5 +40,10 @@ namespace Authorizer.Domain.Entities
             var newAvailableLimit = AvailableLimit - amountTransation;
             return newAvailableLimit;
         }
-    }    
+    }
+
+    public class RootAccount
+    {
+        public Account account { get; set; }
+    }
 }
