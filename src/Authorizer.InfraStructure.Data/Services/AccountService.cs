@@ -29,7 +29,7 @@ namespace Authorizer.InfraStructure.Data.Services
                 rootAccount = CreateAccount(accountDto);
             
             if (existsActiveCard != null)
-                rootAccount = ReturnAccount(existsActiveCard);
+                rootAccount = AccountReturn(existsActiveCard);
 
             return JsonConvert.SerializeObject(rootAccount);
         }
@@ -47,7 +47,7 @@ namespace Authorizer.InfraStructure.Data.Services
             return _rootAccount;
         }
 
-        public static RootAccount ReturnAccount(Account account)
+        public RootAccount AccountReturn(Account account)
         {
             var _rootAccount = new RootAccount()
             {

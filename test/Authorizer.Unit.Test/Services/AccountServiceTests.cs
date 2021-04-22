@@ -10,79 +10,72 @@ namespace Authorizer.Unit.Test.Services
 {
     public class AccountServiceTests
     {
-        
+        private Mock<IAccountRepository> mockAccountRepository;
+        private Mock<ILogger<AccountService>> mockLogger;
 
-        //public AccountServiceTests()
-        //{
-        //    this.mockRepository = new MockRepository(MockBehavior.Strict);
+        public AccountServiceTests()
+        {
+            mockAccountRepository = new Mock<IAccountRepository>();
+            mockLogger = new Mock<ILogger<AccountService>>();
+        }
 
-        //    this.mockAccountRepository = this.mockRepository.Create<IAccountRepository>();
-        //    this.mockLogger = this.mockRepository.Create<ILogger<AccountService>>();
-        //}
+        [Fact(DisplayName = "Account Create Init")]
+        [Trait("Account", "Execute")]
+        public void Execute_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var account = new Account(true, 100);
+            mockAccountRepository.Setup(a => a.Create(It.IsAny<Account>())).Returns(account);
 
-        //private AccountService CreateService()
-        //{
-        //    return new AccountService(
-        //        this.mockAccountRepository.Object,
-        //        this.mockLogger.Object);
-        //}
+            // Act
+            var _command = @"{""account"": {""active-card"": true, ""available-limit"": 100}}";
+            var accountDto = JsonConvert.DeserializeObject<RootAccount>(_command);
+            var accountService = new AccountService(mockAccountRepository.Object, mockLogger.Object);
 
-        //[Fact]
-        //public void Execute_StateUnderTest_ExpectedBehavior()
-        //{
-        //    // Arrange
-        //    var service = this.CreateService();
-        //    string command = null;
+            // Assert
+            var result = accountService.CreateAccount(accountDto);
+            mockAccountRepository.VerifyAll();
+        }
 
-        //    // Act
-        //    var result = service.Execute(
-        //        command);
-
-        //    // Assert
-        //    Assert.True(false);
-        //    this.mockRepository.VerifyAll();
-        //}
-
-        [Fact]
+        [Fact(DisplayName = "Account Create Valid")]
+        [Trait("Account", "Create Account")]
         public void CreateAccount_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
             var account = new Account(true, 100);
-
-            Mock<IAccountRepository> mockAccountRepository = new Mock<IAccountRepository>();
             mockAccountRepository.Setup(a => a.Create(It.IsAny<Account>())).Returns(account);
 
-            Mock<ILogger<AccountService>> mockLogger = new Mock<ILogger<AccountService>>();
-
             // Act
-            var _command = @"{""account"": {""active-card"": true, ""available-limit"": 200}}";
+            var _command = @"{""account"": {""active-card"": true, ""available-limit"": 100}}";
             var accountDto = JsonConvert.DeserializeObject<RootAccount>(_command);
             var accountService = new AccountService(mockAccountRepository.Object, mockLogger.Object);
-
-            // Act
             var result = accountService.CreateAccount(accountDto);
 
             // Assert
             Assert.True(result.account.ActiveCard);
             Assert.Equal(100, result.account.AvailableLimit);
+            Assert.Empty(result.account.Violations); 
 
             mockAccountRepository.VerifyAll();
         }
 
-        //[Fact]
-        //public void ReturnAccount_StateUnderTest_ExpectedBehavior()
-        //{
-        //    // Arrange
-        //    var service = this.CreateService();
-        //    Account account = null;
+        [Fact(DisplayName = "Account Already Initialized")]
+        [Trait("Account", "Account Return")]
+        public void AccountReturn_StateUnderTest_ExpectedBehavior()
+        {
+            // Arrange
+            var account = new Account(true, 100);
+            mockAccountRepository.Setup(a => a.Create(It.IsAny<Account>())).Returns(account);
 
-        //    // Act
-        //    var result = service.ReturnAccount(
-        //        account);
+            // Act
+            var accountService = new AccountService(mockAccountRepository.Object, mockLogger.Object);
+            var result = accountService.AccountReturn(account);
+            var msgReturn = result.account.Violations[0];
 
-        //    // Assert
-        //    Assert.True(false);
-        //    this.mockRepository.VerifyAll();
-        //}
+            // Assert
+            Assert.True(result.account.ActiveCard);
+            Assert.Equal(100, result.account.AvailableLimit);
+            Assert.Equal("account-already-initialized", msgReturn);
+        }
     }
 }
