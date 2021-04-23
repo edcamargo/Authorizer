@@ -26,8 +26,4 @@
     <ProjectReference Include="..\..\src\Authorizer.InfraStructure.Data\Authorizer.InfraStructure.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="JsonFake\" />
-  </ItemGroup>
-
 </Project>

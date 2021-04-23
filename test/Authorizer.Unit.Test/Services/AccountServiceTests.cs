@@ -1,6 +1,7 @@
 ﻿using Authorizer.Domain.Entities;
 using Authorizer.Domain.Interfaces.Repositories;
 using Authorizer.InfraStructure.Data.Services;
+using Authorizer.Unit.Test.JsonFake;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Newtonsoft.Json;
@@ -19,21 +20,23 @@ namespace Authorizer.Unit.Test.Services
             mockLogger = new Mock<ILogger<AccountService>>();
         }
 
-        [Fact(DisplayName = "Account Create Init")]
+        [Fact(DisplayName = "Account Execute Init")]
         [Trait("Account", "Execute")]
         public void Execute_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
+            var accountService = new AccountService(mockAccountRepository.Object, mockLogger.Object);
             var account = new Account(true, 100);
             mockAccountRepository.Setup(a => a.Create(It.IsAny<Account>())).Returns(account);
 
             // Act
-            var _command = @"{""account"": {""active-card"": true, ""available-limit"": 100}}";
-            var accountDto = JsonConvert.DeserializeObject<RootAccount>(_command);
-            var accountService = new AccountService(mockAccountRepository.Object, mockLogger.Object);
+            var _command = FakeArchive.AccountInputOne();
+            var accountResult = accountService.Execute(_command);
+            var activeCardResult =  JsonConvert.SerializeObject(accountResult);
 
             // Assert
-            var result = accountService.CreateAccount(accountDto);
+            Assert.NotEmpty(activeCardResult);
+
             mockAccountRepository.VerifyAll();
         }
 
@@ -44,11 +47,11 @@ namespace Authorizer.Unit.Test.Services
             // Arrange
             var account = new Account(true, 100);
             mockAccountRepository.Setup(a => a.Create(It.IsAny<Account>())).Returns(account);
+            var accountService = new AccountService(mockAccountRepository.Object, mockLogger.Object);
 
             // Act
-            var _command = @"{""account"": {""active-card"": true, ""available-limit"": 100}}";
+            var _command = FakeArchive.AccountInputOne();
             var accountDto = JsonConvert.DeserializeObject<RootAccount>(_command);
-            var accountService = new AccountService(mockAccountRepository.Object, mockLogger.Object);
             var result = accountService.CreateAccount(accountDto);
 
             // Assert
@@ -66,9 +69,9 @@ namespace Authorizer.Unit.Test.Services
             // Arrange
             var account = new Account(true, 100);
             mockAccountRepository.Setup(a => a.Create(It.IsAny<Account>())).Returns(account);
-
-            // Act
             var accountService = new AccountService(mockAccountRepository.Object, mockLogger.Object);
+            
+            // Act
             var result = accountService.AccountReturn(account);
             var msgReturn = result.account.Violations[0];
 

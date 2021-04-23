@@ -5,8 +5,7 @@ namespace Authorizer.Domain.Entities
 {
     public class Transaction : Entity
     {
-        public Transaction()
-        { }
+        public Transaction() { }
 
         public Transaction(string merchant, int amount, DateTime time)
         {
