@@ -11,13 +11,13 @@ namespace Authorizer.Unit.Test.Services
 {
     public class AccountServiceTests
     {
-        private Mock<IAccountRepository> mockAccountRepository;
-        private Mock<ILogger<AccountService>> mockLogger;
+        private readonly Mock<IAccountRepository> _mockAccountRepository;
+        private readonly Mock<ILogger<AccountService>> _mockLogger;
 
         public AccountServiceTests()
         {
-            mockAccountRepository = new Mock<IAccountRepository>();
-            mockLogger = new Mock<ILogger<AccountService>>();
+            _mockAccountRepository = new Mock<IAccountRepository>();
+            _mockLogger = new Mock<ILogger<AccountService>>();
         }
 
         [Fact(DisplayName = "Account Execute Init")]
@@ -25,9 +25,9 @@ namespace Authorizer.Unit.Test.Services
         public void Execute_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            var accountService = new AccountService(mockAccountRepository.Object, mockLogger.Object);
+            var accountService = new AccountService(_mockAccountRepository.Object, _mockLogger.Object);
             var account = new Account(true, 100);
-            mockAccountRepository.Setup(a => a.Create(It.IsAny<Account>())).Returns(account);
+            _mockAccountRepository.Setup(a => a.Create(It.IsAny<Account>())).Returns(account);
 
             // Act
             var _command = FakeArchive.AccountInputOne();
@@ -37,17 +37,17 @@ namespace Authorizer.Unit.Test.Services
             // Assert
             Assert.NotEmpty(activeCardResult);
 
-            mockAccountRepository.VerifyAll();
+            _mockAccountRepository.VerifyAll();
         }
 
-        [Fact(DisplayName = "Account Create Valid")]
+        [Fact(DisplayName = "Account Create Valid Success")]
         [Trait("Account", "Create Account")]
         public void CreateAccount_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
             var account = new Account(true, 100);
-            mockAccountRepository.Setup(a => a.Create(It.IsAny<Account>())).Returns(account);
-            var accountService = new AccountService(mockAccountRepository.Object, mockLogger.Object);
+            _mockAccountRepository.Setup(a => a.Create(It.IsAny<Account>())).Returns(account);
+            var accountService = new AccountService(_mockAccountRepository.Object, _mockLogger.Object);
 
             // Act
             var _command = FakeArchive.AccountInputOne();
@@ -59,7 +59,7 @@ namespace Authorizer.Unit.Test.Services
             Assert.Equal(100, result.account.AvailableLimit);
             Assert.Empty(result.account.Violations); 
 
-            mockAccountRepository.VerifyAll();
+            _mockAccountRepository.VerifyAll();
         }
 
         [Fact(DisplayName = "Account Already Initialized")]
@@ -68,17 +68,18 @@ namespace Authorizer.Unit.Test.Services
         {
             // Arrange
             var account = new Account(true, 100);
-            mockAccountRepository.Setup(a => a.Create(It.IsAny<Account>())).Returns(account);
-            var accountService = new AccountService(mockAccountRepository.Object, mockLogger.Object);
+            _mockAccountRepository.Setup(a => a.Create(It.IsAny<Account>())).Returns(account);
+            var accountService = new AccountService(_mockAccountRepository.Object, _mockLogger.Object);
             
             // Act
             var result = accountService.AccountReturn(account);
             var msgReturn = result.account.Violations[0];
+            var expected = "account-already-initialized";
 
             // Assert
             Assert.True(result.account.ActiveCard);
             Assert.Equal(100, result.account.AvailableLimit);
-            Assert.Equal("account-already-initialized", msgReturn);
+            Assert.Equal(expected, msgReturn);
         }
     }
 }
