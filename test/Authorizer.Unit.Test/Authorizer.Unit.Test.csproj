@@ -10,7 +10,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.5" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <PackageReference Include="Moq" Version="4.16.1" />
-    <PackageReference Include="MSTest.TestFramework" Version="2.2.3" />
     <PackageReference Include="StructureMap" Version="4.7.1" />
     <PackageReference Include="System.Memory" Version="4.5.4" />
     <PackageReference Include="xunit" Version="2.4.1" />
@@ -25,7 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Authorizer.Application.Worker\Authorizer.Application.Worker.csproj" />
     <ProjectReference Include="..\..\src\Authorizer.InfraStructure.Data\Authorizer.InfraStructure.Data.csproj" />
   </ItemGroup>
 
