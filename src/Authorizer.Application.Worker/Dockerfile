@@ -6,8 +6,8 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 COPY ["src/Authorizer.Application.Worker/Authorizer.Application.Worker.csproj", "src/Authorizer.Application.Worker/"]
-COPY ["src/Authorizer.InfraStructure.Data/Authorizer.InfraStructure.Data.csproj", "src/Authorizer.InfraStructure.Data/"]
 COPY ["src/Authorizer.Domain/Authorizer.Domain.csproj", "src/Authorizer.Domain/"]
+COPY ["src/Authorizer.InfraStructure.Data/Authorizer.InfraStructure.Data.csproj", "src/Authorizer.InfraStructure.Data/"]
 COPY ["src/Authorizer.InfraStructure.Ioc/Authorizer.InfraStructure.Ioc.csproj", "src/Authorizer.InfraStructure.Ioc/"]
 RUN dotnet restore "src/Authorizer.Application.Worker/Authorizer.Application.Worker.csproj"
 COPY . .

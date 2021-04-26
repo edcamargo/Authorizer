@@ -14,6 +14,7 @@ namespace Authorizer.Unit.Test.Services
         private readonly Mock<IAccountRepository> _mockAccountRepository;
         private readonly Mock<ILogger<AccountService>> _mockLogger;
 
+
         public AccountServiceTests()
         {
             _mockAccountRepository = new Mock<IAccountRepository>();
