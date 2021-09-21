@@ -50,8 +50,8 @@ namespace Authorizer.Unit.Test.Services
             var accountService = new AccountService(_mockAccountRepository.Object, _mockLogger.Object);
 
             // Act
-            var _command = FakeArchive.AccountInputOne();
-            var accountDto = JsonConvert.DeserializeObject<RootAccount>(_command);
+            var command = FakeArchive.AccountInputOne();
+            var accountDto = JsonConvert.DeserializeObject<RootAccount>(command);
             var result = accountService.CreateAccount(accountDto);
 
             // Assert
