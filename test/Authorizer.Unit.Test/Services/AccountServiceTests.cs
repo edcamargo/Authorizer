@@ -14,7 +14,6 @@ namespace Authorizer.Unit.Test.Services
         private readonly Mock<IAccountRepository> _mockAccountRepository;
         private readonly Mock<ILogger<AccountService>> _mockLogger;
 
-
         public AccountServiceTests()
         {
             _mockAccountRepository = new Mock<IAccountRepository>();
@@ -23,7 +22,7 @@ namespace Authorizer.Unit.Test.Services
 
         [Fact(DisplayName = "Account Execute Init")]
         [Trait("Account", "Execute")]
-        public void Execute_StateUnderTest_ExpectedBehavior()
+        public void ExecuteStateUnderTestExpectedBehavior()
         {
             // Arrange
             var accountService = new AccountService(_mockAccountRepository.Object, _mockLogger.Object);
@@ -43,7 +42,7 @@ namespace Authorizer.Unit.Test.Services
 
         [Fact(DisplayName = "Account Create Valid Success")]
         [Trait("Account", "Create Account")]
-        public void CreateAccount_StateUnderTest_ExpectedBehavior()
+        public void CreateAccountStateUnderTestExpectedBehavior()
         {
             // Arrange
             var account = new Account(true, 100);
@@ -65,13 +64,13 @@ namespace Authorizer.Unit.Test.Services
 
         [Fact(DisplayName = "Account Already Initialized")]
         [Trait("Account", "Account Return")]
-        public void AccountReturn_StateUnderTest_ExpectedBehavior()
+        public void AccountReturnStateUnderTestExpectedBehavior()
         {
             // Arrange
             var account = new Account(true, 100);
             _mockAccountRepository.Setup(a => a.Create(It.IsAny<Account>())).Returns(account);
             var accountService = new AccountService(_mockAccountRepository.Object, _mockLogger.Object);
-            
+
             // Act
             var result = accountService.AccountReturn(account);
             var msgReturn = result.account.Violations[0];

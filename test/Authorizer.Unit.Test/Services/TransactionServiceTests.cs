@@ -24,7 +24,7 @@ namespace Authorizer.Unit.Test.Services
 
         [Fact(DisplayName = "Account Not Initialized")]
         [Trait("Transaction", "Create Transact")]
-        public void Should_ExecuteAccountNotInitialized_ReturnTrue()
+        public void ShouldExecuteAccountNotInitializedReturnTrue()
         {
             // Arrange
             var command = FakeArchive.TransactionInputOne();
@@ -49,7 +49,7 @@ namespace Authorizer.Unit.Test.Services
 
         [Fact(DisplayName = "Account Card Not Active")]
         [Trait("Transaction", "Create Transact")]
-        public void Should_ExecuteAccountCardNotActive_ReturnTrue()
+        public void ShouldExecuteAccountCardNotActiveReturnTrue()
         {
             // Arrange
             var command = FakeArchive.TransactionInputOne();
@@ -75,7 +75,7 @@ namespace Authorizer.Unit.Test.Services
 
         [Fact(DisplayName = "Insufficient Limit")]
         [Trait("Transaction", "Create Transact")]
-        public void Should_ValidateInsufficientLimit_ReturnTrue()
+        public void ShouldValidateInsufficientLimitReturnTrue()
         {
             // Arrange
             var account = new Account(true, 100);
