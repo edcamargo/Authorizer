@@ -22,11 +22,16 @@ namespace Authorizer.Application.Worker
             _logger = logger;
         }
 
-        public void Run(String[] args)
+        public void Run(string[] args)
         {
             _logger.LogInformation("Init Test!");
 
-            using (StreamReader reader = new StreamReader(Console.OpenStandardInput()))
+            if (args is null)
+            {
+                Console.WriteLine("Operation not implemented!");
+            }
+
+            using (StreamReader reader = new(Console.OpenStandardInput()))
             {
                 var stdin = "";
                 do

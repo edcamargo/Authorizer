@@ -47,7 +47,7 @@ namespace Authorizer.InfraStructure.Data.Services
             return _rootAccount;
         }
 
-        public RootAccount AccountReturn(Account account)
+        public static RootAccount AccountReturn(Account account)
         {
             var _rootAccount = new RootAccount()
             {

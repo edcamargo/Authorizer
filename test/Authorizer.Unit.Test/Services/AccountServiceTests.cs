@@ -72,7 +72,7 @@ namespace Authorizer.Unit.Test.Services
             var accountService = new AccountService(_mockAccountRepository.Object, _mockLogger.Object);
 
             // Act
-            var result = accountService.AccountReturn(account);
+            var result = AccountService.AccountReturn(account);
             var msgReturn = result.account.Violations[0];
             var expected = "account-already-initialized";
 
